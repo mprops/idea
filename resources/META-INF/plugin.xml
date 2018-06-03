@@ -1,0 +1,26 @@
+<idea-plugin>
+    <id>com.github.mulpr</id>
+    <name>MULPR format</name>
+    <version>181.1.0</version>
+    <vendor email="mike.fursov@gmail.com" url="https://github.com/mulpr">github.com/mulpr</vendor>
+
+    <description><![CDATA[
+      Multiline properties format (MULPR) support.
+    ]]></description>
+
+    <idea-version since-build="181"/>
+
+    <!--<depends>com.intellij.modules.lang</depends>-->
+
+    <actions/>
+    <!-- Plugin's application components -->
+    <application-components/>
+
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="com.github.mulpr.MulprFileTypeFactory"/>
+        <lang.parserDefinition language="MULPR" implementationClass="com.github.mulpr.parser.MulprParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="MULPR" implementationClass="com.github.mulpr.editor.MulprSyntaxHighlighter$MulprSyntaxHighlighterFactory"/>
+        <!--<completion.contributor language="MULPR" implementationClass="com.github.mulpr.editor.codecompletion.MulprCompletionContributor"/>-->
+    </extensions>
+</idea-plugin>

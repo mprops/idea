@@ -1,1 +1,6 @@
 /out
+.idea/dictionaries/*
+.idea/misc.xml
+.idea/modules.xml
+.idea/*.iml
+.idea/vcs.xml

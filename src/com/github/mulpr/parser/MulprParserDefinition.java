@@ -26,7 +26,7 @@ public class MulprParserDefinition implements ParserDefinition, MulprElements {
     @NotNull
     @Override
     public Lexer createLexer(Project project) {
-        return new FlexAdapter(new MulprLexer(null));
+        return new FlexAdapter(new MulprLexer());
     }
 
     @NotNull

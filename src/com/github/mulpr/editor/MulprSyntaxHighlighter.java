@@ -27,14 +27,15 @@ public class MulprSyntaxHighlighter extends SyntaxHighlighterBase {
 
     static {
         put(MulprElements.BAD_CHARACTER, HighlighterColors.BAD_CHARACTER);
-        put(MulprElements.KEY, DefaultLanguageHighlighterColors.STRING);
+        put(MulprElements.KEY_MARKER, DefaultLanguageHighlighterColors.BRACES);
+        put(MulprElements.KEY, DefaultLanguageHighlighterColors.KEYWORD);
         put(MulprElements.VALUE, DefaultLanguageHighlighterColors.STRING);
     }
 
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
-        return new FlexAdapter(new MulprLexer(null));
+        return new FlexAdapter(new MulprLexer());
     }
 
     @NotNull

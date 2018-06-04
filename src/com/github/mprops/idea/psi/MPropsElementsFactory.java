@@ -1,7 +1,7 @@
-package com.github.mulpr.psi;
+package com.github.mprops.idea.psi;
 
-import com.github.mulpr.psi.impl.MulprPropertyElement;
-import com.github.mulpr.psi.impl.MulprPsiElement;
+import com.github.mprops.idea.psi.impl.MPropsPropertyElement;
+import com.github.mprops.idea.psi.impl.MPropsPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class MulprElementsFactory implements MulprElements {
+public class MPropsElementsFactory implements MPropsElements {
 
     private final static Map<ASTNode, Function<ASTNode, PsiElement>> elementFactory = new HashMap<>();
 
@@ -19,9 +19,9 @@ public class MulprElementsFactory implements MulprElements {
         return elementFactory.computeIfAbsent(node, n -> {
             IElementType type = n.getElementType();
             if (type == PROPERTY) {
-                return MulprPropertyElement::new;
+                return MPropsPropertyElement::new;
             }
-            return MulprPsiElement::new;
+            return MPropsPsiElement::new;
         }).apply(node);
     }
 }

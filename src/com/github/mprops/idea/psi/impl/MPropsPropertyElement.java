@@ -1,11 +1,11 @@
-package com.github.mulpr.psi.impl;
+package com.github.mprops.idea.psi.impl;
 
-import com.github.mulpr.psi.MulprElements;
+import com.github.mprops.idea.psi.MPropsElements;
 import com.intellij.lang.ASTNode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class MulprPropertyElement extends MulprPsiElement {
+public class MPropsPropertyElement extends MPropsPsiElement {
 
     @Nullable
     public ASTNode keyMarker;
@@ -16,15 +16,15 @@ public class MulprPropertyElement extends MulprPsiElement {
     @Nullable
     public ASTNode valueNode;
 
-    public MulprPropertyElement(@NotNull ASTNode node) {
+    public MPropsPropertyElement(@NotNull ASTNode node) {
         super(node);
     }
 
     public void sync() {
         ASTNode node = getNode();
-        keyMarker = node.findChildByType(MulprElements.KEY_MARKER);
-        keyNode = node.findChildByType(MulprElements.KEY);
-        valueNode = node.findChildByType(MulprElements.VALUE);
+        keyMarker = node.findChildByType(MPropsElements.KEY_MARKER);
+        keyNode = node.findChildByType(MPropsElements.KEY);
+        valueNode = node.findChildByType(MPropsElements.VALUE);
     }
 
     @Override

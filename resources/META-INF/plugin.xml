@@ -1,11 +1,11 @@
 <idea-plugin>
-    <id>com.github.mulpr</id>
-    <name>MULPR format</name>
+    <id>com.github.mprops.idea</id>
+    <name>Multiline properties format</name>
     <version>181.1.0</version>
-    <vendor email="mike.fursov@gmail.com" url="https://github.com/mulpr">github.com/mulpr</vendor>
+    <vendor email="mike.fursov@gmail.com" url="https://github.com/mprops/mprops-idea">github.com/mprops/mprops-idea</vendor>
 
     <description><![CDATA[
-      Multiline properties format (MULPR) support.
+      Multiline properties format.
     ]]></description>
 
     <idea-version since-build="181"/>
@@ -18,9 +18,9 @@
 
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileTypeFactory implementation="com.github.mulpr.MulprFileTypeFactory"/>
-        <lang.parserDefinition language="MULPR" implementationClass="com.github.mulpr.parser.MulprParserDefinition"/>
-        <lang.syntaxHighlighterFactory language="MULPR" implementationClass="com.github.mulpr.editor.MulprSyntaxHighlighter$MulprSyntaxHighlighterFactory"/>
-        <!--<completion.contributor language="MULPR" implementationClass="com.github.mulpr.editor.codecompletion.MulprCompletionContributor"/>-->
+        <fileTypeFactory implementation="com.github.mprops.idea.MPropsFileTypeFactory"/>
+        <lang.parserDefinition language="MProps" implementationClass="com.github.mprops.idea.parser.MPropsParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="MProps" implementationClass="com.github.mprops.idea.editor.MPropsSyntaxHighlighter$MPropsSyntaxHighlighterFactory"/>
+        <!--<completion.contributor language="MProps" implementationClass="com.github.mprops.idea.editor.codecompletion.MPropsCompletionContributor"/>-->
     </extensions>
 </idea-plugin>

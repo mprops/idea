@@ -1,15 +1,15 @@
-package com.github.mulpr;
+package com.github.mprops.idea;
 
-import com.github.mulpr.psi.MulprElements;
-import com.github.mulpr.psi.MulprLexerElements;
+import com.github.mprops.idea.psi.MPropsElements;
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 
-public class MulprLexer implements FlexLexer {
+public class MPropsLexer implements FlexLexer {
 
     private static final int STATE_PARSING_MARKER = 0;
     private static final int STATE_PARSING_KEY = 1;
     private static final int STATE_PARSING_VALUE = 2;
+    private static final char KEY_MARKER_CHAR = '~';
 
     private int state = 0;
 
@@ -48,16 +48,25 @@ public class MulprLexer implements FlexLexer {
         }
         switch (state) {
             case STATE_PARSING_MARKER:
-                tokenStart += tokenLen;
-                tokenLen = 1;
+                advanceToken();
                 if (buffer.charAt(tokenStart) != '~') {
-                    return MulprLexerElements.BAD_CHARACTER;
+                    if (tokenStart != 0) {
+                        return MPropsElements.BAD_CHARACTER;
+                    }
+                    // header comment zone
+                    for (int i = tokenStart; i < bufferLen; i++) {
+                        tokenLen++;
+                        if (isNewLineCharFollowedByKeyMarker(i)) {
+                            break;
+                        }
+                    }
+                    return MPropsElements.HEADER_COMMENT;
                 }
+                tokenLen = 1;
                 state = STATE_PARSING_KEY;
-                return MulprLexerElements.KEY_MARKER;
+                return MPropsElements.KEY_MARKER;
             case STATE_PARSING_KEY: {
-                tokenStart += tokenLen;
-                tokenLen = 0;
+                advanceToken();
                 for (int i = tokenStart; i < bufferLen; i++) {
                     tokenLen++;
                     if (buffer.charAt(i) == '\n') { // todo: handle all line breaks correctly
@@ -65,22 +74,34 @@ public class MulprLexer implements FlexLexer {
                     }
                 }
                 state = STATE_PARSING_VALUE;
-                return MulprElements.KEY;
+                return MPropsElements.KEY;
             }
             case STATE_PARSING_VALUE:
-                //todo: check if not new key start (if prev was empty)
-                tokenStart += tokenLen;
-                tokenLen = 0;
+                advanceToken();
+                if (buffer.charAt(tokenStart) == KEY_MARKER_CHAR) {
+                    state = STATE_PARSING_MARKER;
+                    return MPropsElements.VALUE;
+                }
                 for (int i = tokenStart; i < bufferLen; i++) {
                     tokenLen++;
-                    if (buffer.charAt(i) == '\n' && i + 1 < bufferLen - 1 && buffer.charAt(i + 1) == '~') { // todo: handle all line breaks correctly
+                    if (isNewLineCharFollowedByKeyMarker(i)) {
                         break;
                     }
                 }
                 state = STATE_PARSING_MARKER;
-                return MulprElements.VALUE;
+                return MPropsElements.VALUE;
         }
-        return MulprLexerElements.BAD_CHARACTER;
+        return MPropsElements.BAD_CHARACTER;
+    }
+
+    private void advanceToken() {
+        tokenStart += tokenLen;
+        tokenLen = 0;
+    }
+
+    private boolean isNewLineCharFollowedByKeyMarker(int i) {
+        // todo: handle all line breaks correctly
+        return buffer.charAt(i) == '\n' && i + 1 <= bufferLen - 1 && buffer.charAt(i + 1) == KEY_MARKER_CHAR;
     }
 
     @Override

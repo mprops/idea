@@ -1,10 +1,10 @@
-package com.github.mulpr.parser;
+package com.github.mprops.idea.parser;
 
-import com.github.mulpr.MulprLexer;
-import com.github.mulpr.psi.MulprElements;
-import com.github.mulpr.psi.MulprElementsFactory;
-import com.github.mulpr.psi.MulprFile;
-import com.github.mulpr.psi.stub.MulprStubElements;
+import com.github.mprops.idea.MPropsLexer;
+import com.github.mprops.idea.psi.MPropsElements;
+import com.github.mprops.idea.psi.MPropsElementsFactory;
+import com.github.mprops.idea.psi.MPropsFile;
+import com.github.mprops.idea.psi.stub.MPropsStubElements;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;
@@ -18,21 +18,19 @@ import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
-/* Parser definition used by IntelliJ Platform to parse MULPR file. */
-public class MulprParserDefinition implements ParserDefinition, MulprElements {
-
-    public static final TokenSet WHITE_SPACES = TokenSet.create(WHITE_SPACE, LINE_TERMINATOR);
+/* Parser definition used by IntelliJ Platform to parse multiline properties file. */
+public class MPropsParserDefinition implements ParserDefinition, MPropsElements {
 
     @NotNull
     @Override
     public Lexer createLexer(Project project) {
-        return new FlexAdapter(new MulprLexer());
+        return new FlexAdapter(new MPropsLexer());
     }
 
     @NotNull
     @Override
     public TokenSet getWhitespaceTokens() {
-        return WHITE_SPACES;
+        return TokenSet.EMPTY;
     }
 
     @NotNull
@@ -50,19 +48,19 @@ public class MulprParserDefinition implements ParserDefinition, MulprElements {
     @NotNull
     @Override
     public PsiParser createParser(Project project) {
-        return new MulprParser();
+        return new MPropsParser();
     }
 
     @NotNull
     @Override
     public IFileElementType getFileNodeType() {
-        return MulprStubElements.FILE;
+        return MPropsStubElements.FILE;
     }
 
     @NotNull
     @Override
     public PsiFile createFile(FileViewProvider viewProvider) {
-        return new MulprFile(viewProvider);
+        return new MPropsFile(viewProvider);
     }
 
     @NotNull
@@ -74,6 +72,6 @@ public class MulprParserDefinition implements ParserDefinition, MulprElements {
     @NotNull
     @Override
     public PsiElement createElement(ASTNode node) {
-        return MulprElementsFactory.createElement(node);
+        return MPropsElementsFactory.createElement(node);
     }
 }

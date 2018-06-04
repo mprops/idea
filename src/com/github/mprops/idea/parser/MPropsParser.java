@@ -1,6 +1,6 @@
-package com.github.mulpr.parser;
+package com.github.mprops.idea.parser;
 
-import com.github.mulpr.psi.MulprElements;
+import com.github.mprops.idea.psi.MPropsElements;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.LighterASTNode;
 import com.intellij.lang.PsiBuilder;
@@ -9,7 +9,7 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.util.diff.FlyweightCapableTreeStructure;
 import org.jetbrains.annotations.NotNull;
 
-public class MulprParser implements PsiParser, MulprElements {
+public class MPropsParser implements PsiParser, MPropsElements {
 
     @NotNull
     public ASTNode parse(@NotNull IElementType root, @NotNull PsiBuilder b) {

@@ -1,7 +1,7 @@
-package com.github.mulpr.editor;
+package com.github.mprops.idea.editor;
 
-import com.github.mulpr.MulprLexer;
-import com.github.mulpr.psi.MulprElements;
+import com.github.mprops.idea.MPropsLexer;
+import com.github.mprops.idea.psi.MPropsElements;
 import com.intellij.lexer.FlexAdapter;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
@@ -19,23 +19,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Rules to highlight MULPR text.
+ * Rules to highlight multiline properties..
  */
-public class MulprSyntaxHighlighter extends SyntaxHighlighterBase {
+public class MPropsSyntaxHighlighter extends SyntaxHighlighterBase {
 
     private static final Map<IElementType, TextAttributesKey[]> KEYS_BY_TYPE = new HashMap<>();
 
     static {
-        put(MulprElements.BAD_CHARACTER, HighlighterColors.BAD_CHARACTER);
-        put(MulprElements.KEY_MARKER, DefaultLanguageHighlighterColors.BRACES);
-        put(MulprElements.KEY, DefaultLanguageHighlighterColors.KEYWORD);
-        put(MulprElements.VALUE, DefaultLanguageHighlighterColors.STRING);
+        put(MPropsElements.HEADER_COMMENT, DefaultLanguageHighlighterColors.BLOCK_COMMENT);
+        put(MPropsElements.KEY_MARKER, DefaultLanguageHighlighterColors.BRACES);
+        put(MPropsElements.KEY, DefaultLanguageHighlighterColors.KEYWORD);
+        put(MPropsElements.VALUE, DefaultLanguageHighlighterColors.STRING);
+
+        put(MPropsElements.BAD_CHARACTER, HighlighterColors.BAD_CHARACTER);
+
     }
 
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
-        return new FlexAdapter(new MulprLexer());
+        return new FlexAdapter(new MPropsLexer());
     }
 
     @NotNull
@@ -48,11 +51,11 @@ public class MulprSyntaxHighlighter extends SyntaxHighlighterBase {
         KEYS_BY_TYPE.put(e, tokens);
     }
 
-    public static class MulprSyntaxHighlighterFactory extends SyntaxHighlighterFactory {
+    public static class MPropsSyntaxHighlighterFactory extends SyntaxHighlighterFactory {
         @NotNull
         @Override
         public SyntaxHighlighter getSyntaxHighlighter(Project project, VirtualFile virtualFile) {
-            return new MulprSyntaxHighlighter();
+            return new MPropsSyntaxHighlighter();
         }
     }
 }

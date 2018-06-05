@@ -1,11 +1,11 @@
 <idea-plugin>
     <id>com.github.mprops.idea</id>
-    <name>Multiline properties format</name>
+    <name>Multiline properties format (.mproperties)</name>
     <version>181.1.0</version>
-    <vendor email="mike.fursov@gmail.com" url="https://github.com/mprops/mprops-idea">github.com/mprops/mprops-idea</vendor>
+    <vendor email="mike.fursov@gmail.com" url="https://github.com/mprops/mprops-idea">Mikhail Fursov</vendor>
 
     <description><![CDATA[
-      Multiline properties format.
+      Plugin adds support for <a href="https://github.com/mprops">multiline properties format</a>.
     ]]></description>
 
     <idea-version since-build="181"/>
@@ -13,15 +13,14 @@
     <!--<depends>com.intellij.modules.lang</depends>-->
 
     <actions/>
-    <!-- Plugin's application components -->
-    <application-components/>
 
+    <application-components/>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileTypeFactory implementation="com.github.mprops.idea.MPropsFileTypeFactory"/>
         <lang.parserDefinition language="MProps" implementationClass="com.github.mprops.idea.parser.MPropsParserDefinition"/>
         <lang.syntaxHighlighterFactory language="MProps" implementationClass="com.github.mprops.idea.editor.MPropsSyntaxHighlighter$MPropsSyntaxHighlighterFactory"/>
         <lang.foldingBuilder language="MProps" implementationClass="com.github.mprops.idea.editor.MPropsFoldingBuilder"/>
-        <!--<completion.contributor language="MProps" implementationClass="com.github.mprops.idea.editor.codecompletion.MPropsCompletionContributor"/>-->
     </extensions>
+
 </idea-plugin>

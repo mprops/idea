@@ -13,5 +13,7 @@ public interface MPropsElements extends MPropsStubElements {
 
     IElementType PROPERTY = new MPropsElementType("PROPERTY");
 
+    IElementType WHITE_SPACE = com.intellij.psi.TokenType.WHITE_SPACE;
+    IElementType LINE_TERMINATOR = new MPropsElementType("LINE_TERMINATOR");
     IElementType BAD_CHARACTER = new MPropsElementType("BAD_CHARACTER");
 }

@@ -21,6 +21,10 @@ import org.jetbrains.annotations.NotNull;
 /* Parser definition used by IntelliJ Platform to parse multiline properties file. */
 public class MPropsParserDefinition implements ParserDefinition, MPropsElements {
 
+    public static final TokenSet WHITE_SPACES = TokenSet.create(WHITE_SPACE, LINE_TERMINATOR);
+
+    public static final TokenSet COMMENTS = TokenSet.create(HEADER_COMMENT);
+
     @NotNull
     @Override
     public Lexer createLexer(Project project) {
@@ -30,13 +34,13 @@ public class MPropsParserDefinition implements ParserDefinition, MPropsElements 
     @NotNull
     @Override
     public TokenSet getWhitespaceTokens() {
-        return TokenSet.EMPTY;
+        return WHITE_SPACES;
     }
 
     @NotNull
     @Override
     public TokenSet getCommentTokens() {
-        return TokenSet.EMPTY;
+        return COMMENTS;
     }
 
     @NotNull

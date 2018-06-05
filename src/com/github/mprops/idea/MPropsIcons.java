@@ -6,5 +6,4 @@ import javax.swing.Icon;
 
 public interface MPropsIcons {
     Icon File = AllIcons.Nodes.ResourceBundle;
-
 }

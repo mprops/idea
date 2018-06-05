@@ -49,16 +49,19 @@ public class MPropsLexer implements FlexLexer {
         switch (state) {
             case STATE_PARSING_MARKER:
                 advanceToken();
-                if (buffer.charAt(tokenStart) != '~') {
-                    if (tokenStart != 0) {
+                if (isEOL(tokenStart)) {
+                    tokenLen = 1;
+                    return MPropsElements.LINE_TERMINATOR;
+                }
+                if (!isKeyMarker(tokenStart)) {
+                    if (tokenStart != 0) { // if not a header and not a key marker -> error
                         return MPropsElements.BAD_CHARACTER;
                     }
-                    // header comment zone
-                    for (int i = tokenStart; i < bufferLen; i++) {
-                        tokenLen++;
+                    for (int i = tokenStart; i < bufferLen; i++) { // read header comment
                         if (isNewLineCharFollowedByKeyMarker(i)) {
                             break;
                         }
+                        tokenLen++;
                     }
                     return MPropsElements.HEADER_COMMENT;
                 }
@@ -67,9 +70,9 @@ public class MPropsLexer implements FlexLexer {
                 return MPropsElements.KEY_MARKER;
             case STATE_PARSING_KEY: {
                 advanceToken();
-                for (int i = tokenStart; i < bufferLen; i++) {
+                for (int i = tokenStart; i < bufferLen; i++) { //todo: heading & trailing spaces?
                     tokenLen++;
-                    if (buffer.charAt(i) == '\n') { // todo: handle all line breaks correctly
+                    if (isEOL(i)) {
                         break;
                     }
                 }
@@ -78,15 +81,16 @@ public class MPropsLexer implements FlexLexer {
             }
             case STATE_PARSING_VALUE:
                 advanceToken();
-                if (buffer.charAt(tokenStart) == KEY_MARKER_CHAR) {
+                if (buffer.charAt(tokenStart) == KEY_MARKER_CHAR) { // value is empty -> new keys follows the previous one.
                     state = STATE_PARSING_MARKER;
                     return MPropsElements.VALUE;
                 }
+                // read the value. Stop on the last line break.
                 for (int i = tokenStart; i < bufferLen; i++) {
-                    tokenLen++;
-                    if (isNewLineCharFollowedByKeyMarker(i)) {
+                    if (isNewLineCharFollowedByKeyMarker(i)) { // the last line terminator is not included into the value
                         break;
                     }
+                    tokenLen++;
                 }
                 state = STATE_PARSING_MARKER;
                 return MPropsElements.VALUE;
@@ -99,9 +103,21 @@ public class MPropsLexer implements FlexLexer {
         tokenLen = 0;
     }
 
-    private boolean isNewLineCharFollowedByKeyMarker(int i) {
+    private boolean isNewLineCharFollowedByKeyMarker(int idx) {
         // todo: handle all line breaks correctly
-        return buffer.charAt(i) == '\n' && i + 1 <= bufferLen - 1 && buffer.charAt(i + 1) == KEY_MARKER_CHAR;
+        return isEOL(idx) && isKeyMarker(idx + 1);
+    }
+
+    private boolean isEOL(int idx) {
+        if (idx > bufferLen) {
+            return false;
+        }
+        char c = buffer.charAt(idx);
+        return c == '\n' || c == '\r';
+    }
+
+    private boolean isKeyMarker(int idx) {
+        return idx <= bufferLen - 1 && buffer.charAt(idx) == KEY_MARKER_CHAR;
     }
 
     @Override

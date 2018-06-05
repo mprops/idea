@@ -1,11 +1,12 @@
 <idea-plugin>
     <id>com.github.mprops.idea</id>
-    <name>Multiline properties format (.mproperties)</name>
+    <name>MProps: multiline properties format</name>
     <version>181.1.0</version>
     <vendor email="mike.fursov@gmail.com" url="https://github.com/mprops/mprops-idea">Mikhail Fursov</vendor>
 
     <description><![CDATA[
-      Plugin adds support for <a href="https://github.com/mprops">multiline properties format</a>.
+      Plugin adds support for <a href="https://github.com/mprops">multiline properties format</a>.<br>
+      File extension: <i>.mproperties</i>
     ]]></description>
 
     <idea-version since-build="181"/>

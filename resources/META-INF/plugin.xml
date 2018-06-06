@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.mprops.idea</id>
     <name>MProps: multiline properties format</name>
-    <version>181.1.0</version>
+    <version>181.1.1</version>
     <vendor email="mike.fursov@gmail.com" url="https://github.com/mprops/mprops-idea">Mikhail Fursov</vendor>
 
     <description><![CDATA[
@@ -10,8 +10,6 @@
     ]]></description>
 
     <idea-version since-build="181"/>
-
-    <!--<depends>com.intellij.modules.lang</depends>-->
 
     <actions/>
 
@@ -22,6 +20,7 @@
         <lang.parserDefinition language="MProps" implementationClass="com.github.mprops.idea.parser.MPropsParserDefinition"/>
         <lang.syntaxHighlighterFactory language="MProps" implementationClass="com.github.mprops.idea.editor.MPropsSyntaxHighlighter$MPropsSyntaxHighlighterFactory"/>
         <lang.foldingBuilder language="MProps" implementationClass="com.github.mprops.idea.editor.MPropsFoldingBuilder"/>
+        <gotoSymbolContributor implementation="com.github.mprops.idea.editor.MPropsChooseByNameContributor"/>
     </extensions>
 
 </idea-plugin>

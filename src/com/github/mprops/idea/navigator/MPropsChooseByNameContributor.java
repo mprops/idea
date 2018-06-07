@@ -1,4 +1,4 @@
-package com.github.mprops.idea.editor;
+package com.github.mprops.idea.navigator;
 
 import com.github.mprops.idea.psi.impl.MPropsPropertyElement;
 import com.github.mprops.idea.util.MPropsUtils;

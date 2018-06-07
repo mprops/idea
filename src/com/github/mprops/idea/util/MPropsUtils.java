@@ -26,8 +26,8 @@ public class MPropsUtils {
         List<MPropsPropertyElement> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(MPropsFileType.INSTANCE, GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
-            MPropsFile simpleFile = (MPropsFile) PsiManager.getInstance(project).findFile(virtualFile);
-            MPropsPropertyElement[] properties = simpleFile == null ? null : PsiTreeUtil.getChildrenOfType(simpleFile, MPropsPropertyElement.class);
+            MPropsFile mPropsFile = (MPropsFile) PsiManager.getInstance(project).findFile(virtualFile);
+            MPropsPropertyElement[] properties = mPropsFile == null ? null : PsiTreeUtil.getChildrenOfType(mPropsFile, MPropsPropertyElement.class);
             if (properties == null) {
                 continue;
             }

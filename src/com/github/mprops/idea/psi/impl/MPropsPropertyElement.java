@@ -38,6 +38,12 @@ public class MPropsPropertyElement extends MPropsPsiElement {
         return keyNode == null ? "" : keyNode.getText().trim();
     }
 
+    @NotNull
+    public String getValue() {
+        ASTNode valueNode = getValueNode();
+        return valueNode == null ? "" : valueNode.getText();
+    }
+
     @Override
     public String toString() {
         return "#property";

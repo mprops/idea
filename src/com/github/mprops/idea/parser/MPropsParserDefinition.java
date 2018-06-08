@@ -18,12 +18,10 @@ import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
-/* Parser definition used by IntelliJ Platform to parse multiline properties file. */
+/**
+ * Parser definition used by IntelliJ Platform to parse multiline properties file.
+ */
 public class MPropsParserDefinition implements ParserDefinition, MPropsElements {
-
-    public static final TokenSet WHITE_SPACES = TokenSet.create(WHITE_SPACE, LINE_TERMINATOR);
-
-    public static final TokenSet COMMENTS = TokenSet.create(HEADER_COMMENT);
 
     @NotNull
     @Override
@@ -34,13 +32,13 @@ public class MPropsParserDefinition implements ParserDefinition, MPropsElements 
     @NotNull
     @Override
     public TokenSet getWhitespaceTokens() {
-        return WHITE_SPACES;
+        return TokenSet.EMPTY;
     }
 
     @NotNull
     @Override
     public TokenSet getCommentTokens() {
-        return COMMENTS;
+        return TokenSet.EMPTY;
     }
 
     @NotNull

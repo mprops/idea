@@ -46,8 +46,7 @@ public class MPropsFoldingBuilder implements FoldingBuilder, DumbAware {
         if (type == MPropsElements.PROPERTY) {
             String key = findChildText(node, MPropsElements.KEY);
             String value = findChildText(node, MPropsElements.VALUE);
-            //todo: trim key in lexer?
-            String formattedKey = StringUtils.abbreviate(key.trim(), 30);
+            String formattedKey = StringUtils.abbreviate(key, 30);
             String formatterValue = StringUtils.abbreviate(value.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t"), 45);
             if (formatterValue.isEmpty()) {
                 formatterValue = "<empty>";

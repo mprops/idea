@@ -81,7 +81,7 @@ public class MPropsFindUsagesProvider implements FindUsagesProvider {
         String key = property.getKey();
         String value = property.getValue();
 
-        String formattedKey = StringUtils.abbreviate(key.trim(), 30);
+        String formattedKey = StringUtils.abbreviate(key, 30);
         String formatterValue = StringUtils.abbreviate(value.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t"), 45);
         if (formatterValue.isEmpty()) {
             formatterValue = "<empty>";

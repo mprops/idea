@@ -1,5 +1,6 @@
 package com.github.mprops.idea.psi;
 
+import com.github.mprops.idea.psi.impl.MPropsKeyElement;
 import com.github.mprops.idea.psi.impl.MPropsPropertyElement;
 import com.github.mprops.idea.psi.impl.MPropsPsiElement;
 import com.intellij.lang.ASTNode;
@@ -20,6 +21,8 @@ public class MPropsElementsFactory implements MPropsElements {
             IElementType type = n.getElementType();
             if (type == PROPERTY) {
                 return MPropsPropertyElement::new;
+            } else if (type == KEY) {
+                return MPropsKeyElement::new;
             }
             return MPropsPsiElement::new;
         }).apply(node);

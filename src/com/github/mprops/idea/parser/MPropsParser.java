@@ -26,27 +26,20 @@ public class MPropsParser implements PsiParser, MPropsElements {
     private void doParse(@NotNull IElementType root, @NotNull PsiBuilder b) {
         PsiBuilder.Marker fileBlock = b.mark();
         while (!b.eof()) {
-            boolean ok = parseProperty(b);
-            if (!ok) {
+            if (b.getTokenType() != KEY_MARKER) {
                 b.advanceLexer();
+                continue;
+            }
+            PsiBuilder.Marker propertyBlock = b.mark();
+            try {
+                b.advanceLexer(); // key marker
+                while (!b.eof() && b.getTokenType() != KEY_MARKER) {
+                    b.advanceLexer();
+                }
+            } finally {
+                propertyBlock.done(PROPERTY);
             }
         }
         fileBlock.done(root);
-    }
-
-    private boolean parseProperty(@NotNull PsiBuilder b) {
-        if (b.getTokenType() != KEY_MARKER) {
-            return false;
-        }
-        PsiBuilder.Marker propertyMark = b.mark();
-        try {
-            b.advanceLexer(); // '~'
-            b.advanceLexer(); // key
-            b.advanceLexer(); // value: TODO: check if not empty
-        } finally {
-            propertyMark.done(PROPERTY);
-        }
-        return true;
-
     }
 }

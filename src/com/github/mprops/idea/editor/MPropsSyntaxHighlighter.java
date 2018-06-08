@@ -30,7 +30,6 @@ public class MPropsSyntaxHighlighter extends SyntaxHighlighterBase {
         put(MPropsElements.KEY_MARKER, DefaultLanguageHighlighterColors.BRACES);
         put(MPropsElements.KEY, DefaultLanguageHighlighterColors.KEYWORD);
         put(MPropsElements.VALUE, DefaultLanguageHighlighterColors.STRING);
-
         put(MPropsElements.BAD_CHARACTER, HighlighterColors.BAD_CHARACTER);
 
     }

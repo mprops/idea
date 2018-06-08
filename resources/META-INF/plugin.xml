@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.mprops.idea</id>
     <name>MProps: multiline properties format</name>
-    <version>181.1.1</version>
+    <version>181.1.2</version>
     <vendor email="mike.fursov@gmail.com" url="https://github.com/mprops/mprops-idea">Mikhail Fursov</vendor>
 
     <description><![CDATA[

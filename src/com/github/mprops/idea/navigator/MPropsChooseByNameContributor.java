@@ -1,6 +1,5 @@
 package com.github.mprops.idea.navigator;
 
-import com.github.mprops.idea.psi.impl.MPropsKeyElement;
 import com.github.mprops.idea.psi.impl.MPropsPropertyElement;
 import com.github.mprops.idea.util.MPropsUtils;
 import com.intellij.navigation.ChooseByNameContributor;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MPropsChooseByNameContributor implements ChooseByNameContributor {
+
     @NotNull
     @Override
     public String[] getNames(@NotNull Project project, boolean includeNonProjectItems) {
@@ -24,9 +24,8 @@ public class MPropsChooseByNameContributor implements ChooseByNameContributor {
     public NavigationItem[] getItemsByName(@NotNull String name, @NotNull String pattern, @NotNull Project project, boolean includeNonProjectItems) {
         List<MPropsPropertyElement> properties = MPropsUtils.findProperties(project, name);
         return properties.stream()
-                .map(MPropsPropertyElement::getKeyNode)
+                .map(MPropsPropertyElement::getKeyElement)
                 .filter(Objects::nonNull)
-                .map(c -> new MPropsKeyElement(c.getNode()))
                 .toArray(NavigationItem[]::new);
     }
 }

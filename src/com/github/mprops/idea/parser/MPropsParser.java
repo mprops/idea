@@ -34,7 +34,13 @@ public class MPropsParser implements PsiParser, MPropsElements {
             try {
                 b.advanceLexer(); // key marker
                 while (!b.eof() && b.getTokenType() != KEY_MARKER) {
-                    b.advanceLexer();
+                    if (b.getTokenType() == KEY) {
+                        PsiBuilder.Marker keyBlock = b.mark();
+                        b.advanceLexer();
+                        keyBlock.done(KEY);
+                    } else {
+                        b.advanceLexer();
+                    }
                 }
             } finally {
                 propertyBlock.done(PROPERTY);

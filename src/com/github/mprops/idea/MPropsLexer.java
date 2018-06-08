@@ -163,7 +163,7 @@ public class MPropsLexer implements FlexLexer {
         check(isEOL(tokenStart), "EOL");
 
         tokenLen = 1;
-        state = isKeyMarker(tokenStart) ? State.KeyMarker : State.Value;
+        state = isKeyMarker(tokenStart + tokenLen) ? State.KeyMarker : State.Value;
         return MPropsElements.LINE_TERMINATOR;
     }
 

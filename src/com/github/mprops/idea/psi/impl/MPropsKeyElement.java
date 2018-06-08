@@ -3,9 +3,12 @@ package com.github.mprops.idea.psi.impl;
 import com.github.mprops.idea.util.MPropsPresentations;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNamedElement;
+import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
-public class MPropsKeyElement extends MPropsPsiElement {
+public class MPropsKeyElement extends MPropsPsiElement implements PsiNamedElement {
 
     public MPropsKeyElement(@NotNull ASTNode node) {
         super(node);
@@ -22,8 +25,9 @@ public class MPropsKeyElement extends MPropsPsiElement {
         return key.isEmpty() ? null : key;
     }
 
-    public String toString() {
-        return "key:" + getKey();
+    @Override
+    public PsiElement setName(@NotNull String name) throws IncorrectOperationException {
+        throw new IncorrectOperationException();
     }
 
     @Override

@@ -21,7 +21,7 @@
         <lang.syntaxHighlighterFactory language="MProps" implementationClass="com.github.mprops.idea.editor.MPropsSyntaxHighlighter$MPropsSyntaxHighlighterFactory"/>
         <lang.foldingBuilder language="MProps" implementationClass="com.github.mprops.idea.editor.MPropsFoldingBuilder"/>
         <gotoSymbolContributor implementation="com.github.mprops.idea.navigator.MPropsChooseByNameContributor"/>
-        <!--TODO: <lang.findUsagesProvider language="MProps" implementationClass="com.github.mprops.idea.navigator.MPropsFindUsagesProvider"/>-->
+        <lang.findUsagesProvider language="MProps" implementationClass="com.github.mprops.idea.navigator.MPropsFindUsagesProvider"/>
     </extensions>
 
 </idea-plugin>

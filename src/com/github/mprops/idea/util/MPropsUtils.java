@@ -2,7 +2,6 @@ package com.github.mprops.idea.util;
 
 import com.github.mprops.idea.MPropsFileType;
 import com.github.mprops.idea.psi.MPropsFile;
-import com.github.mprops.idea.psi.impl.MPropsKeyElement;
 import com.github.mprops.idea.psi.impl.MPropsPropertyElement;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;

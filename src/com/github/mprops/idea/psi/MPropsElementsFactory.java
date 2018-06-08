@@ -14,10 +14,11 @@ import java.util.function.Function;
 
 public class MPropsElementsFactory implements MPropsElements {
 
-    private final static Map<ASTNode, Function<ASTNode, PsiElement>> elementFactory = new HashMap<>();
+    private final static Map<ASTNode, Function<ASTNode, PsiElement>> FACTORIES = new HashMap<>();
 
+    @NotNull
     public static PsiElement createElement(@NotNull ASTNode node) {
-        return elementFactory.computeIfAbsent(node, n -> {
+        return FACTORIES.computeIfAbsent(node, n -> {
             IElementType type = n.getElementType();
             if (type == PROPERTY) {
                 return MPropsPropertyElement::new;

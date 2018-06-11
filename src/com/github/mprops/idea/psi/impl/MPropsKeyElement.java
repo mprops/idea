@@ -1,12 +1,16 @@
 package com.github.mprops.idea.psi.impl;
 
-import com.github.mprops.idea.util.MPropsPresentations;
+import com.github.mprops.idea.MPropsIcons;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.Icon;
 
 public class MPropsKeyElement extends MPropsPsiElement implements PsiNamedElement {
 
@@ -30,8 +34,28 @@ public class MPropsKeyElement extends MPropsPsiElement implements PsiNamedElemen
         throw new IncorrectOperationException();
     }
 
+    @NotNull
     @Override
     public ItemPresentation getPresentation() {
-        return MPropsPresentations.getPresentation(this);
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return getName();
+            }
+
+            @Nullable
+            @Override
+            public String getLocationString() {
+                PsiFile containingFile = getContainingFile();
+                return containingFile == null ? null : containingFile.getName();
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return MPropsIcons.File;
+            }
+        };
     }
 }

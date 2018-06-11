@@ -6,7 +6,7 @@ import com.github.mprops.idea.psi.impl.MPropsKeyElement;
 import com.intellij.lang.cacheBuilder.WordOccurrence;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
-import com.intellij.lexer.FlexAdapter;
+import com.intellij.lexer.Lexer;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +17,7 @@ public class MPropsFindUsagesProvider implements FindUsagesProvider {
     @Nullable
     @Override
     public WordsScanner getWordsScanner() {
-        FlexAdapter lexer = new FlexAdapter(new MPropsLexer());
+        Lexer lexer = new MPropsLexer();
         return (fileText, processor) -> {
             lexer.start(fileText);
             while (true) {

@@ -1,11 +1,12 @@
 package com.github.mprops.idea;
 
 import com.github.mprops.idea.psi.MPropsElements;
-import com.intellij.lexer.FlexLexer;
+import com.intellij.lexer.LexerBase;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class MPropsLexer implements FlexLexer {
+public class MPropsLexer extends LexerBase {
 
     enum State {
         HeaderComment,
@@ -21,69 +22,112 @@ public class MPropsLexer implements FlexLexer {
 
     protected static final char KEY_MARKER_CHAR = '~';
 
-    protected State state = State.HeaderComment;
-
-    private int tokenStart = 0;
-    private int tokenLen = 0;
-    private int bufferLen = 0;
+    protected State state;
+    protected IElementType tokenType;
+    private int tokenStart;
+    private int tokenLen;
     private CharSequence buffer;
+    private int wholeBufferStart;
+    private int wholeBufferEnd;
+    private CharSequence wholeBuffer;
 
     @Override
-    public void yybegin(int state) {
-        this.state = State.values()[state];
+    public void start(@NotNull CharSequence wholeBuffer, int startOffset, int endOffset, int initialState) {
+        this.state = State.HeaderComment;
+        this.tokenType = MPropsElements.HEADER_COMMENT;
+        this.tokenStart = 0;
+        this.tokenLen = 0;
+        this.wholeBuffer = wholeBuffer;
+        this.wholeBufferStart = startOffset;
+        this.wholeBufferEnd = endOffset;
+        this.buffer = wholeBuffer.subSequence(startOffset, endOffset);
     }
 
     @Override
-    public int yystate() {
+    public int getState() {
         return state.ordinal();
+    }
+
+    @Nullable
+    @Override
+    public IElementType getTokenType() {
+        return tokenType;
     }
 
     @Override
     public int getTokenStart() {
-        return tokenStart;
+        return wholeBufferStart + tokenStart;
     }
 
     @Override
     public int getTokenEnd() {
-        return tokenStart + tokenLen;
+        return wholeBufferStart + tokenStart + tokenLen;
     }
 
     /**
      * Returns null on EOF.
      */
     @Override
-    public IElementType advance() {
+    public void advance() {
         if (buffer == null || isEOF(tokenStart + tokenLen)) {
-            return null;
+            if ((state == State.WsBeforeKey || state == State.Key) && tokenLen > 0) { // ensure we always have a key in the model after key-marker. Event if the key is empty.
+                tokenType = MPropsElements.KEY;
+            } else {
+                tokenType = null;
+            }
+            tokenStart = buffer == null ? 0 : buffer.length();
+            tokenLen = 0;
+            return;
         }
         switch (state) {
             case HeaderComment:
-                return onHeaderComment();
+                onHeaderComment();
+                break;
             case EolAfterHeaderComment:
-                return onEolAfterHeaderComment();
+                onEolAfterHeaderComment();
+                break;
             case KeyMarker:
-                return onKeyMarker();
+                onKeyMarker();
+                break;
             case WsBeforeKey:
-                return onWsBeforeKey();
+                onWsBeforeKey();
+                break;
             case Key:
-                return onKey();
+                onKey();
+                break;
             case WsAfterKey:
-                return onWsAfterKey();
+                onWsAfterKey();
+                break;
             case EolAfterKey:
-                return onEolAfterKey();
+                onEolAfterKey();
+                break;
             case Value:
-                return onValue();
+                onValue();
+                break;
             case EolAfterValue:
-                return onEolAfterValue();
+                onEolAfterValue();
+                break;
+            default:
+                tokenType = MPropsElements.BAD_CHARACTER;
         }
-        return MPropsElements.BAD_CHARACTER;
     }
 
     @NotNull
-    private IElementType onHeaderComment() {
+    @Override
+    public CharSequence getBufferSequence() {
+        return wholeBuffer;
+    }
+
+    @Override
+    public int getBufferEnd() {
+        return wholeBufferEnd;
+    }
+
+    private void onHeaderComment() {
         check(tokenStart == 0, "Start of file");
         if (isKeyMarker(tokenStart)) {
-            return onKeyMarker();
+            onKeyMarker();
+            return;
         }
         // read header comment
         for (; !isEOF(tokenLen); tokenLen++) {
@@ -92,43 +136,40 @@ public class MPropsLexer implements FlexLexer {
             }
         }
         if (tokenLen == 0) {
-            return onEolAfterHeaderComment();
+            onEolAfterHeaderComment();
+            return;
         }
         state = State.EolAfterHeaderComment;
-        return MPropsElements.HEADER_COMMENT;
+        tokenType = MPropsElements.HEADER_COMMENT;
     }
 
-    @NotNull
-    private IElementType onEolAfterHeaderComment() {
+    private void onEolAfterHeaderComment() {
         advanceToken();
         check(isEOL(tokenStart), "EOL");
         tokenLen = 1;
         check(isEOF(tokenStart + tokenLen) || isKeyMarker(tokenStart + tokenLen), "EOL or key marker");
         state = State.KeyMarker;
-        return MPropsElements.LINE_TERMINATOR;
+        tokenType = MPropsElements.LINE_TERMINATOR;
     }
 
-    @NotNull
-    private IElementType onKeyMarker() {
+    private void onKeyMarker() {
         advanceToken();
         check(isKeyMarker(tokenStart), "Key marker");
         tokenLen = 1;
         state = isWS(tokenStart + tokenLen) ? State.WsBeforeKey : State.Key;
-        return MPropsElements.KEY_MARKER;
+        tokenType = MPropsElements.KEY_MARKER;
     }
 
-    @NotNull
-    private IElementType onWsBeforeKey() {
+    private void onWsBeforeKey() {
         advanceToken();
         check(isWS(tokenStart), "WS");
         skipWS();
         check(tokenLen > 0, "tokenLen > 0");
         state = State.Key;
-        return MPropsElements.WHITE_SPACE;
+        tokenType = MPropsElements.WHITE_SPACE;
     }
 
-    @NotNull
-    private IElementType onKey() {
+    private void onKey() {
         advanceToken();
         check(!isWS(tokenStart), "!WS");
 
@@ -143,32 +184,29 @@ public class MPropsLexer implements FlexLexer {
         }
         tokenLen = keyEndIdx - tokenStart;
         state = isWS(tokenStart + tokenLen) ? State.WsAfterKey : State.EolAfterKey;
-        return MPropsElements.KEY;
+        tokenType = MPropsElements.KEY;
     }
 
-    @NotNull
-    private IElementType onWsAfterKey() {
+    private void onWsAfterKey() {
         advanceToken();
         check(isWS(tokenStart), "WS");
 
         skipWS();
         check(tokenLen > 0, "tokenLen > 0");
         state = State.EolAfterKey;
-        return MPropsElements.WHITE_SPACE;
+        tokenType = MPropsElements.WHITE_SPACE;
     }
 
-    @NotNull
-    private IElementType onEolAfterKey() {
+    private void onEolAfterKey() {
         advanceToken();
         check(isEOL(tokenStart), "EOL");
 
         tokenLen = 1;
         state = isKeyMarker(tokenStart + tokenLen) ? State.KeyMarker : State.Value;
-        return MPropsElements.LINE_TERMINATOR;
+        tokenType = MPropsElements.LINE_TERMINATOR;
     }
 
-    @NotNull
-    private IElementType onValue() {
+    private void onValue() {
         advanceToken();
         check(!isKeyMarker(tokenStart), "Not key marker");
 
@@ -179,25 +217,25 @@ public class MPropsLexer implements FlexLexer {
             }
         }
         if (tokenLen == 0) {
-            return onEolAfterValue();
+            onEolAfterValue();
+            return;
         }
         state = State.EolAfterValue;
-        return MPropsElements.VALUE;
+        tokenType = MPropsElements.VALUE;
     }
 
-    @NotNull
-    private IElementType onEolAfterValue() {
+    private void onEolAfterValue() {
         advanceToken();
         check(isEOL(tokenStart), "EOL");
 
         tokenLen = 1;
         check(isEOF(tokenStart + tokenLen) || isKeyMarker(tokenStart + tokenLen), "EOF or key marker");
         state = State.KeyMarker;
-        return MPropsElements.LINE_TERMINATOR;
+        tokenType = MPropsElements.LINE_TERMINATOR;
     }
 
     private void advanceToken() {
-        check(tokenLen > 0 || tokenStart == 0 || state == State.Value, "Beginning of file or tokenLen > 0 or empty value");
+        check(tokenLen > 0 || tokenStart == 0 || state == State.Value || state == State.EolAfterKey, "Beginning of file or tokenLen > 0 or empty value or empty key");
         tokenStart += tokenLen;
         tokenLen = 0;
     }
@@ -214,7 +252,7 @@ public class MPropsLexer implements FlexLexer {
     }
 
     private boolean isEOF(int idx) {
-        return idx >= bufferLen;
+        return idx >= buffer.length();
     }
 
     private boolean isEOL(int idx) {
@@ -246,12 +284,5 @@ public class MPropsLexer implements FlexLexer {
         }
     }
 
-    @Override
-    public void reset(CharSequence buffer, int start, int end, int initialState) {
-        this.buffer = buffer;
-        this.tokenStart = start;
-        this.tokenLen = 0;
-        this.bufferLen = end;
-        yybegin(initialState);
-    }
+
 }

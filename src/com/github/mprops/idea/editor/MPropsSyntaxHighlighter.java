@@ -27,7 +27,7 @@ public class MPropsSyntaxHighlighter extends SyntaxHighlighterBase {
 
     static {
         put(MPropsElements.HEADER_COMMENT, DefaultLanguageHighlighterColors.BLOCK_COMMENT);
-        put(MPropsElements.KEY_MARKER, DefaultLanguageHighlighterColors.BRACES);
+        put(MPropsElements.KEY_MARKER, DefaultLanguageHighlighterColors.PREDEFINED_SYMBOL);
         put(MPropsElements.KEY, DefaultLanguageHighlighterColors.KEYWORD);
         put(MPropsElements.VALUE, DefaultLanguageHighlighterColors.STRING);
         put(MPropsElements.BAD_CHARACTER, HighlighterColors.BAD_CHARACTER);
@@ -37,7 +37,7 @@ public class MPropsSyntaxHighlighter extends SyntaxHighlighterBase {
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
-        return new FlexAdapter(new MPropsLexer());
+        return new MPropsLexer();
     }
 
     @NotNull

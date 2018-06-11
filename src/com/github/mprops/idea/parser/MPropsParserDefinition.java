@@ -26,7 +26,7 @@ public class MPropsParserDefinition implements ParserDefinition, MPropsElements 
     @NotNull
     @Override
     public Lexer createLexer(Project project) {
-        return new FlexAdapter(new MPropsLexer());
+        return new MPropsLexer();
     }
 
     @NotNull

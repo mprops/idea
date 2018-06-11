@@ -38,10 +38,11 @@ public class MPropsKeyElement extends MPropsPsiElement implements PsiNamedElemen
     @Override
     public ItemPresentation getPresentation() {
         return new ItemPresentation() {
-            @Nullable
+            @NotNull
             @Override
             public String getPresentableText() {
-                return getName();
+                String name = getName();
+                return name == null || name.isEmpty() ? "<empty>" : name;
             }
 
             @Nullable

@@ -174,11 +174,13 @@ public class MPropsLexer extends LexerBase {
         check(!isWS(tokenStart), "!WS");
 
         int keyEndIdx = tokenStart;
+        boolean hasNonEmptyKey = false;
         while (!isEOL(keyEndIdx) && !isEOF(keyEndIdx)) {
+            hasNonEmptyKey = hasNonEmptyKey || !isWS(keyEndIdx);
             keyEndIdx++;
         }
-        if (isEOF(keyEndIdx)) {
-            while (keyEndIdx >= tokenStart && isWS(keyEndIdx)) {
+        if (hasNonEmptyKey) {
+            while (keyEndIdx >= tokenStart && isWS(keyEndIdx - 1)) { // roll back trailing spaces
                 keyEndIdx--;
             }
         }

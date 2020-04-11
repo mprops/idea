@@ -1,0 +1,57 @@
+<idea-plugin>
+    <id>com.github.mprops.idea</id>
+    <name>MProps: multiline properties format</name>
+    <version>201.1.1</version>
+    <vendor email="mike.fursov@gmail.com" url="https://github.com/mprops/mprops-idea">Mikhail Fursov</vendor>
+
+    <description><![CDATA[
+      Plugin adds support for <a href="https://github.com/mprops">multiline properties format</a>.<br>
+      File extension: <i>.mproperties</i>
+    ]]></description>
+
+    <idea-version since-build="201"/>
+
+    <actions/>
+
+    <application-components/>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="MProps"
+                  implementationClass="com.github.mprops.idea.MPropsFileType"
+                  fieldName="INSTANCE"
+                  language="MProps"
+                  extensions="mproperties"
+        />
+
+        <lang.parserDefinition
+                language="MProps"
+                implementationClass="com.github.mprops.idea.parser.MPropsParserDefinition"
+        />
+
+        <lang.syntaxHighlighterFactory
+                language="MProps"
+                implementationClass="com.github.mprops.idea.editor.MPropsSyntaxHighlighter$MPropsSyntaxHighlighterFactory"
+        />
+
+        <lang.foldingBuilder
+                language="MProps"
+                implementationClass="com.github.mprops.idea.editor.MPropsFoldingBuilder"
+        />
+
+        <gotoSymbolContributor
+                implementation="com.github.mprops.idea.navigator.MPropsChooseByNameContributor"
+        />
+
+
+        <lang.findUsagesProvider
+                language="MProps"
+                implementationClass="com.github.mprops.idea.navigator.MPropsFindUsagesProvider"
+        />
+
+        <lang.psiStructureViewFactory
+                language="MProps"
+                implementationClass="com.github.mprops.idea.structure.MPropsStructureViewBuilderFactory"
+        />
+    </extensions>
+
+</idea-plugin>

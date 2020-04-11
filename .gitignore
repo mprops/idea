@@ -1,8 +1,12 @@
 /out
 .idea/dictionaries/*
+.idea/inspectionProfiles/*
 .idea/misc.xml
 .idea/modules.xml
+.idea/workspace.xml
+.idea/compiler.xml
 .idea/*.iml
 .idea/vcs.xml
+*.iml
 
 *.jar

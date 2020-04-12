@@ -20,7 +20,7 @@ public class MPropsFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "Multiline Properties File";
+        return "Multiline Props File";
     }
 
     @NotNull
